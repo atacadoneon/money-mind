@@ -47,7 +47,7 @@
     "date-fns": "^3.6.0",
     "driver.js": "^1.4.0",
     "lucide-react": "^0.451.0",
-    "next": "14.2.15",
+    "next": "16.2.4",
     "next-intl": "^4.9.1",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
