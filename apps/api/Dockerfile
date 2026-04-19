@@ -14,7 +14,6 @@ RUN apk add --no-cache libc6-compat tini curl \
 WORKDIR /app
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
-ENV NODE_ENV=production
 
 # ----------- Stage 2: deps -----------
 FROM base AS deps
