@@ -1,0 +1,49 @@
+{
+  "name": "money-mind",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MONEY MIND - BPO Financeiro multi-tenant (Grupo Lauxen)",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "clean": "turbo clean",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
+    "db:migrate": "tsx db/run-migrations.ts",
+    "db:migrate:dry-run": "tsx db/run-migrations.ts --dry-run",
+    "db:seed": "tsx db/seed/seed.ts",
+    "db:reset": "tsx db/reset.ts && pnpm db:migrate && pnpm db:seed",
+    "docker:up": "node scripts/docker-compose-run.mjs up -d",
+    "docker:down": "node scripts/docker-compose-run.mjs down",
+    "docker:reset": "node scripts/docker-compose-run.mjs down -v && node scripts/docker-compose-run.mjs up -d",
+    "load:smoke": "k6 run scripts/load/k6-smoke.js",
+    "load:load": "k6 run scripts/load/k6-load.js",
+    "load:stress": "k6 run scripts/load/k6-stress.js",
+    "load:spike": "k6 run scripts/load/k6-spike.js",
+    "load:soak": "k6 run scripts/load/k6-soak.js",
+    "load:full": "pnpm load:load && pnpm load:stress"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/pg": "^8.11.6",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
+    "dotenv": "^16.4.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "pg": "^8.11.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "tsx": "^4.7.2",
+    "turbo": "^2.0.6",
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@9.1.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

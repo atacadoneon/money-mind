@@ -1,0 +1,7 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "@next/next/no-html-link-for-pages": "off"
+  },
+  "ignorePatterns": ["src/__tests__/**", "tests/**", "e2e/**", "*.test.ts", "*.test.tsx"]
+}

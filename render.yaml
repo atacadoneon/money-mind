@@ -1,0 +1,103 @@
+# ============================================================
+# MONEY MIND — Render Blueprint
+# Docs: https://render.com/docs/blueprint-spec
+# ============================================================
+# Aplique via: Render Dashboard > New > Blueprint > aponte pro repo.
+# Postgres: usamos Supabase (externo). DATABASE_URL vem de secret.
+# ============================================================
+
+services:
+  - type: web
+    name: money-mind-api
+    runtime: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: false
+    branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3333
+      - key: LOG_LEVEL
+        value: info
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: money-mind-redis
+          property: connectionString
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: TINY_V2_BASE_URL
+        value: https://api.tiny.com.br/api2
+      - key: TINY_V3_BASE_URL
+        value: https://api.tiny.com.br/public-api/v3
+      - key: CONTA_SIMPLES_BASE_URL
+        value: https://api.contasimples.com
+      - key: PAGARME_BASE_URL
+        value: https://api.pagar.me/core/v5
+      - key: VIACEP_BASE_URL
+        value: https://viacep.com.br/ws
+      - key: BRASILAPI_BASE_URL
+        value: https://brasilapi.com.br/api
+
+  - type: worker
+    name: money-mind-worker
+    runtime: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    dockerCommand: node dist/worker.js
+    autoDeploy: false
+    branch: main
+    envVars:
+      - fromGroup: money-mind-shared
+      - key: WORKER_MODE
+        value: "true"
+
+  - type: redis
+    name: money-mind-redis
+    plan: starter
+    region: oregon
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+envVarGroups:
+  - name: money-mind-shared
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false

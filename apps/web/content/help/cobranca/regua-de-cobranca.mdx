@@ -1,0 +1,55 @@
+---
+title: Configurando a régua de cobrança
+description: Como automatizar cobranças por WhatsApp, e-mail e SMS
+category: cobranca
+categoryLabel: Régua de Cobrança
+slug: regua-de-cobranca
+order: 1
+---
+
+# Configurando a régua de cobrança
+
+A régua de cobrança automatiza o envio de lembretes e cobranças para seus clientes com contas a receber em aberto.
+
+## Pré-requisitos
+
+- Plano Pro ou superior
+- Integração com WhatsApp (Gupshup), e-mail (SendGrid) ou SMS (Twilio) configurada
+
+## Criar uma régua de cobrança
+
+1. Acesse **Finanças > Cobrança** no menu
+2. Clique em **Nova régua de cobrança**
+3. Configure os gatilhos:
+
+| Gatilho | Exemplo |
+|---------|---------|
+| Antes do vencimento | 5 dias antes |
+| No dia do vencimento | Dia D |
+| Após o vencimento | 3, 7, 15 dias depois |
+
+4. Para cada gatilho, escolha:
+   - **Canal:** WhatsApp, e-mail ou SMS
+   - **Template:** mensagem pré-configurada
+5. Salve a régua
+
+## Aplicar uma régua a contas a receber
+
+1. Selecione as contas na lista de Contas a Receber
+2. Clique em **Ações > Aplicar régua de cobrança**
+3. Selecione a régua criada
+4. Confirme
+
+## Monitorar envios
+
+Acompanhe o histórico de cobranças em **Comunicação > Logs de envio**.
+
+## Templates disponíveis
+
+- Lembrete de vencimento (5 dias)
+- Aviso de vencimento (no dia)
+- Atraso leve (3 dias)
+- Atraso moderado (7 dias)
+- Atraso grave (15 dias)
+
+> Disponível nos planos Pro e superior.

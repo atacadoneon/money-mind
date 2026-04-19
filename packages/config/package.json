@@ -1,0 +1,18 @@
+{
+  "name": "@money-mind/config",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./eslint": "./eslint-preset.cjs",
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/node.json": "./tsconfig/node.json",
+    "./tsconfig/next.json": "./tsconfig/next.json",
+    "./tailwind": "./tailwind-preset.cjs"
+  },
+  "files": ["eslint-preset.cjs", "tailwind-preset.cjs", "tsconfig"],
+  "scripts": {
+    "lint": "echo 'config package has no lint target'",
+    "typecheck": "echo 'config package has no typecheck target'",
+    "clean": "rm -rf .turbo"
+  }
+}

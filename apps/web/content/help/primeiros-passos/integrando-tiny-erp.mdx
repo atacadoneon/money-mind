@@ -1,0 +1,45 @@
+---
+title: Integrando com o Tiny ERP
+description: Como conectar o Tiny ERP / Olist ao Money Mind BPO
+category: primeiros-passos
+categoryLabel: Primeiros Passos
+slug: integrando-tiny-erp
+order: 3
+---
+
+# Integrando com o Tiny ERP
+
+## Pré-requisitos
+
+- Conta ativa no Tiny ERP ou Olist
+- Plano Money Mind Starter ou superior
+
+## Obtendo o Token de API do Tiny
+
+1. Acesse seu painel do Tiny ERP
+2. Vá em **Configurações > Parâmetros > API**
+3. Copie o **Token de Acesso**
+
+## Configurando no Money Mind
+
+1. Acesse **Configurações > Integrações**
+2. Localize o card **Tiny ERP / Olist**
+3. Cole o token no campo **API Token**
+4. Clique em **Salvar integrações**
+
+## O que sincroniza automaticamente
+
+- Pedidos e NF-e emitidas
+- Clientes e fornecedores
+- Contas a receber de pedidos
+- Categorias financeiras do Tiny
+
+## Frequência de sincronização
+
+A sincronização ocorre a cada 30 minutos automaticamente. Você pode forçar uma sincronização manual clicando em **Sincronizar agora** na tela de integrações.
+
+## Problemas comuns
+
+**Token inválido:** verifique se copiou o token completo sem espaços extras.
+
+**Dados não sincronizando:** confirme que o token tem permissão de leitura na API do Tiny.

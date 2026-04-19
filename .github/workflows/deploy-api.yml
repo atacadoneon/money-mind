@@ -1,0 +1,70 @@
+name: Deploy API (Render)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/api/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/deploy-api.yml"
+      - "render.yaml"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment"
+        required: true
+        default: "production"
+        type: choice
+        options: [production, staging]
+
+concurrency:
+  group: deploy-api-${{ github.event.inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger Render deploy hook
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_API }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "RENDER_DEPLOY_HOOK_API secret not configured"
+            exit 1
+          fi
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST "$RENDER_DEPLOY_HOOK")
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          echo "Render response ($STATUS): $BODY"
+          if [ "$STATUS" -ge 400 ]; then
+            exit 1
+          fi
+
+      - name: Wait for deploy + healthcheck
+        env:
+          API_HEALTH_URL: ${{ secrets.API_HEALTH_URL }}
+        run: |
+          if [ -z "$API_HEALTH_URL" ]; then
+            echo "API_HEALTH_URL not set — skipping healthcheck"
+            exit 0
+          fi
+          echo "Waiting 60s for Render build..."
+          sleep 60
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            CODE=$(curl -sS -o /dev/null -w "%{http_code}" "$API_HEALTH_URL" || echo "000")
+            echo "attempt $i: $CODE"
+            if [ "$CODE" = "200" ]; then
+              echo "API healthy"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "API did not become healthy"
+          exit 1

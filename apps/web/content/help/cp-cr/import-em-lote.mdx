@@ -1,0 +1,42 @@
+---
+title: Importação em lote
+description: Como importar múltiplas contas a pagar ou receber via planilha
+category: cp-cr
+categoryLabel: Contas a Pagar/Receber
+slug: import-em-lote
+order: 3
+---
+
+# Importação em lote
+
+Ideal para importar grandes volumes de contas de planilhas ou outros sistemas.
+
+## Formato aceito
+
+Planilha Excel (.xlsx) ou CSV com as colunas:
+
+| Coluna | Obrigatório | Exemplo |
+|--------|-------------|---------|
+| descricao | Sim | "Fornecedor XYZ" |
+| valor | Sim | 1500.00 |
+| data_vencimento | Sim | 2025-06-15 |
+| categoria | Não | "Despesas Operacionais" |
+| fornecedor_cnpj | Não | 00.000.000/0001-00 |
+| observacao | Não | "Parcela 1/3" |
+
+## Como importar
+
+1. Acesse **Finanças > Contas a Pagar**
+2. Clique em **Importar > Excel/CSV**
+3. Faça download do template de exemplo
+4. Preencha sua planilha seguindo o template
+5. Faça upload do arquivo
+6. Revise o preview dos dados
+7. Confirme a importação
+
+## Dicas
+
+- Use o template disponível para evitar erros de formato
+- Datas no formato AAAA-MM-DD
+- Valores decimais com ponto (ex: 1500.50, não 1.500,50)
+- Máximo 1.000 linhas por importação

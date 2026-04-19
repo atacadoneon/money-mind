@@ -1,0 +1,77 @@
+name: DB Migrate (production)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: "staging"
+        type: choice
+        options: [staging, production]
+      dry_run:
+        description: "Dry-run (no SQL applied)"
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: db-migrate-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Run migrations
+    runs-on: ubuntu-latest
+    # ATENCAO: o environment production deve exigir approval manual
+    # em Repo Settings > Environments > production > Required reviewers
+    environment: ${{ github.event.inputs.environment }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.1.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Backup antes de migrar (somente prod)
+        if: github.event.inputs.environment == 'production'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          TS=$(date -u +%Y%m%dT%H%M%SZ)
+          pg_dump "$DATABASE_URL" --format=custom --no-owner --no-privileges -f "backup_pre_migrate_$TS.dump"
+          ls -lh "backup_pre_migrate_$TS.dump"
+
+      - name: Upload backup artifact
+        if: github.event.inputs.environment == 'production'
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-pre-migrate
+          path: backup_pre_migrate_*.dump
+          retention-days: 30
+
+      - name: Apply migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "=== DRY RUN — listando migrations pendentes ==="
+            pnpm db:migrate:dry-run
+          else
+            pnpm db:migrate
+          fi
+
+      - name: Smoke test (SELECT 1)
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          sudo apt-get install -y postgresql-client
+          psql "$DATABASE_URL" -c "SELECT 1;"

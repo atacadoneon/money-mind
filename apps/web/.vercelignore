@@ -1,0 +1,13 @@
+node_modules
+.turbo
+coverage
+.env
+.env.local
+.env.*.local
+*.log
+.git
+.github
+Dockerfile
+docker-compose*.yml
+docs
+scripts

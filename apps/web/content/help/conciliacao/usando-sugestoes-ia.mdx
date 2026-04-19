@@ -1,0 +1,42 @@
+---
+title: Usando as sugestões da IA
+description: Como a inteligência artificial ajuda na conciliação automática
+category: conciliacao
+categoryLabel: Conciliação
+slug: usando-sugestoes-ia
+order: 2
+---
+
+# Usando as sugestões da IA
+
+O Money Mind usa inteligência artificial para identificar correspondências entre transações bancárias e suas contas a pagar/receber.
+
+## Como a IA funciona
+
+O algoritmo analisa:
+
+- **Valor exato** — correspondência por valor idêntico
+- **Valor aproximado** — diferenças de centavos (taxas bancárias)
+- **Data** — ±3 dias da data de vencimento
+- **Descrição** — análise semântica do histórico do banco
+- **CNPJ/CPF** — quando presente na descrição do extrato
+
+## Níveis de confiança
+
+| Cor | Confiança | Ação recomendada |
+|-----|-----------|-----------------|
+| 🟢 Verde | > 95% | Aceitar automaticamente |
+| 🟡 Amarelo | 70-95% | Revisar e confirmar |
+| 🔴 Vermelho | < 70% | Conciliar manualmente |
+
+## Aceitar sugestões em lote
+
+1. Na tela de conciliação, selecione as sugestões com alta confiança
+2. Clique em **Aceitar selecionadas**
+3. As transações serão vinculadas automaticamente
+
+## Treinar a IA
+
+Quanto mais você usa o sistema, mais precisa a IA fica. Cada conciliação manual melhora o algoritmo para futuras conciliações com padrões similares.
+
+> **Disponível no plano Pro e superior.**
