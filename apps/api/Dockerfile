@@ -29,7 +29,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
 COPY . .
 RUN pnpm --filter "./apps/api" build \
- && pnpm --filter "./apps/api" --prod deploy /tmp/api-prod
+ && pnpm --filter "./apps/api" --prod deploy /tmp/api-prod \
+ && cp -r /app/apps/api/dist /tmp/api-prod/dist
 
 # ----------- Stage 4: runner -----------
 FROM node:${NODE_VERSION} AS runner
