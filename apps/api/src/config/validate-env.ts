@@ -10,6 +10,11 @@ export function validateProcessEnv(): void {
   const nodeEnv = process.env.NODE_ENV ?? 'development';
   if (nodeEnv !== 'production') return;
 
+  // SUPABASE_JWT_SECRET pode vir de JWT_SECRET como fallback
+  if (!process.env.SUPABASE_JWT_SECRET?.trim() && process.env.JWT_SECRET?.trim()) {
+    process.env.SUPABASE_JWT_SECRET = process.env.JWT_SECRET;
+  }
+
   const missing: string[] = [];
   if (!process.env.SUPABASE_URL?.trim()) missing.push('SUPABASE_URL');
   if (!process.env.SUPABASE_JWT_SECRET?.trim()) missing.push('SUPABASE_JWT_SECRET');
@@ -24,6 +29,8 @@ export function validateProcessEnv(): void {
 
   const cors = process.env.CORS_ORIGIN?.trim();
   if (!cors || cors === '*') {
-    throw new Error('[env] CORS_ORIGIN em produção deve ser uma lista explícita de origens (não use *).');
+    // Em deploy inicial sem frontend, warn mas não bloqueia
+    // eslint-disable-next-line no-console
+    console.warn('[env] WARN: CORS_ORIGIN não definido ou é "*". Configure origens explícitas antes de ir para produção.');
   }
 }

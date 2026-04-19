@@ -107,7 +107,7 @@ async function bootstrap() {
     swaggerOptions: { persistAuthorization: true },
   });
 
-  const port = config.get<number>('API_PORT', 3333);
+  const port = config.get<number>('PORT') || config.get<number>('API_PORT', 3333);
   await app.listen(port);
   logger.log(`MONEY MIND API running at http://localhost:${port}`);
   logger.log(`Swagger docs at http://localhost:${port}/docs`);
