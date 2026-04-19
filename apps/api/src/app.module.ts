@@ -61,19 +61,30 @@ import { IntegracaoContabilModule } from './integracao-contabil/integracao-conta
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (cs: ConfigService) => ({
-        type: 'postgres',
-        url: cs.get<string>('DATABASE_URL'),
-        ssl: cs.get<string>('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
-        autoLoadEntities: true,
-        synchronize: false,
-        logging: cs.get<string>('TYPEORM_LOGGING') === 'true',
-        namingStrategy: new SnakeNamingStrategy(),
-        extra: {
-          max: Number(cs.get('DATABASE_POOL_MAX', 20)),
-          idleTimeoutMillis: 30000,
-        },
-      }),
+      useFactory: (cs: ConfigService) => {
+        const dbUrl = cs.get<string>('DATABASE_URL') ?? '';
+        // Auto-detect SSL: force SSL for any non-localhost connection (Supabase pooler requires it)
+        const isRemote = !dbUrl.includes('localhost') && !dbUrl.includes('127.0.0.1');
+        const sslExplicit = cs.get<string>('DATABASE_SSL');
+        const useSSL = sslExplicit === 'true' || (sslExplicit !== 'false' && isRemote);
+
+        return {
+          type: 'postgres' as const,
+          url: dbUrl,
+          ssl: useSSL ? { rejectUnauthorized: false } : false,
+          autoLoadEntities: true,
+          synchronize: false,
+          logging: cs.get<string>('TYPEORM_LOGGING') === 'true',
+          namingStrategy: new SnakeNamingStrategy(),
+          retryAttempts: 5,
+          retryDelay: 3000,
+          extra: {
+            max: Number(cs.get('DATABASE_POOL_MAX', 10)),
+            idleTimeoutMillis: 30000,
+            connectionTimeoutMillis: 10000,
+          },
+        };
+      },
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],
