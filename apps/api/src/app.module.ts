@@ -78,6 +78,22 @@ import { IntegracaoContabilModule } from './integracao-contabil/integracao-conta
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (cs: ConfigService) => {
+        const redisUrl = process.env.REDIS_URL || process.env.REDIS_HOST;
+        if (!redisUrl) {
+          // No Redis configured — use dummy connection that won't crash
+          // eslint-disable-next-line no-console
+          console.warn('[BullMQ] No REDIS_URL/REDIS_HOST configured — queues disabled');
+          return {
+            connection: {
+              host: '127.0.0.1',
+              port: 6379,
+              maxRetriesPerRequest: null,
+              lazyConnect: true,
+              enableOfflineQueue: false,
+              retryStrategy: () => null,
+            },
+          };
+        }
         try {
           const r = cs.getOrThrow<{ host: string; port: number; password?: string; db: number }>('redis');
           return {
@@ -91,7 +107,16 @@ import { IntegracaoContabilModule } from './integracao-contabil/integracao-conta
             },
           };
         } catch {
-          return { connection: { host: '127.0.0.1', port: 6379, maxRetriesPerRequest: 1 } };
+          return {
+            connection: {
+              host: '127.0.0.1',
+              port: 6379,
+              maxRetriesPerRequest: null,
+              lazyConnect: true,
+              enableOfflineQueue: false,
+              retryStrategy: () => null,
+            },
+          };
         }
       },
     }),
