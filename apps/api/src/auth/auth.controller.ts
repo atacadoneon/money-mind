@@ -1,11 +1,14 @@
 import { Controller, Post, Body, ForbiddenException, UnauthorizedException, Logger, HttpCode } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import * as jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Public } from './decorators/public.decorator';
 import { OrgMember } from './entities/org-member.entity';
+import { LoginDto } from './dto/login.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger('AuthController');
@@ -25,7 +28,10 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(200)
-  async login(@Body() body: { email: string; password: string }) {
+  @ApiOperation({ summary: 'Login com email e senha' })
+  @ApiResponse({ status: 200, description: 'Login realizado com sucesso' })
+  @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
+  async login(@Body() body: LoginDto) {
     const { email, password } = body;
     if (!email || !password) {
       throw new UnauthorizedException('Email e senha são obrigatórios');
