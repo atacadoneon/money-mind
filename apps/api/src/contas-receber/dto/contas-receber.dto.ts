@@ -14,6 +14,7 @@ export class CreateContaReceberDto {
   @ApiPropertyOptional() @IsOptional() @IsDateString() dataEmissao?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() numeroDocumento?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() clienteId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @Length(1, 200) clienteNome?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() categoriaId?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() formaPagamentoId?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() contaBancariaId?: string;

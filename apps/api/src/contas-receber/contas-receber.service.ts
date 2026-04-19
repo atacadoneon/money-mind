@@ -68,7 +68,9 @@ export class ContasReceberService {
       orgId, companyId: dto.companyId, historico: dto.descricao,
       valor: String(dto.valor), dataVencimento: dto.dataVencimento,
       dataEmissao: dto.dataEmissao, numeroDocumento: dto.numeroDocumento,
-      contatoId: dto.clienteId ?? null, categoriaId: dto.categoriaId ?? null,
+      contatoId: dto.clienteId ?? null,
+      clienteNome: dto.clienteNome ?? dto.descricao ?? '',
+      categoriaId: dto.categoriaId ?? null,
       formaPagamentoId: dto.formaPagamentoId ?? null, contaBancariaId: dto.contaBancariaId ?? null,
       observacoes: dto.observacoes, marcadores: dto.marcadoresIds ?? [], situacao: 'aberto',
     });
@@ -83,6 +85,7 @@ export class ContasReceberService {
     if (dto.dataEmissao !== undefined) cr.dataEmissao = dto.dataEmissao;
     if (dto.numeroDocumento !== undefined) cr.numeroDocumento = dto.numeroDocumento;
     if (dto.clienteId !== undefined) cr.contatoId = dto.clienteId ?? null;
+    if (dto.clienteNome !== undefined) cr.clienteNome = dto.clienteNome;
     if (dto.categoriaId !== undefined) cr.categoriaId = dto.categoriaId ?? null;
     if (dto.formaPagamentoId !== undefined) cr.formaPagamentoId = dto.formaPagamentoId ?? null;
     if (dto.contaBancariaId !== undefined) cr.contaBancariaId = dto.contaBancariaId ?? null;
@@ -258,7 +261,9 @@ export class ContasReceberService {
           orgId, companyId,
           historico: r.descricao!, valor: String(r.valor), dataVencimento: r.dataVencimento!,
           numeroDocumento: r.numeroDocumento,
-          contatoId: r.clienteId ?? null, categoriaId: r.categoriaId ?? null,
+          contatoId: r.clienteId ?? null,
+          clienteNome: (r as any).clienteNome ?? r.descricao ?? '',
+          categoriaId: r.categoriaId ?? null,
           situacao: 'aberto', marcadores: [],
           tinyId: r.tinyId ? String(r.tinyId) : undefined,
         }));

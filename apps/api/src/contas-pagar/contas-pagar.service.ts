@@ -72,7 +72,9 @@ export class ContasPagarService {
       orgId, companyId: dto.companyId, historico: dto.descricao,
       valor: String(dto.valor), dataVencimento: dto.dataVencimento,
       dataEmissao: dto.dataEmissao, numeroDocumento: dto.numeroDocumento,
-      contatoId: dto.fornecedorId ?? null, categoriaId: dto.categoriaId ?? null,
+      contatoId: dto.fornecedorId ?? null,
+      fornecedorNome: dto.fornecedorNome ?? dto.descricao ?? '',
+      categoriaId: dto.categoriaId ?? null,
       formaPagamentoId: dto.formaPagamentoId ?? null, contaBancariaId: dto.contaBancariaId ?? null,
       observacoes: dto.observacoes, marcadores: dto.marcadoresIds ?? [],
       situacao: 'aberto',
@@ -88,6 +90,7 @@ export class ContasPagarService {
     if (dto.dataEmissao !== undefined) cp.dataEmissao = dto.dataEmissao;
     if (dto.numeroDocumento !== undefined) cp.numeroDocumento = dto.numeroDocumento;
     if (dto.fornecedorId !== undefined) cp.contatoId = dto.fornecedorId ?? null;
+    if (dto.fornecedorNome !== undefined) cp.fornecedorNome = dto.fornecedorNome;
     if (dto.categoriaId !== undefined) cp.categoriaId = dto.categoriaId ?? null;
     if (dto.formaPagamentoId !== undefined) cp.formaPagamentoId = dto.formaPagamentoId ?? null;
     if (dto.contaBancariaId !== undefined) cp.contaBancariaId = dto.contaBancariaId ?? null;
@@ -250,7 +253,9 @@ export class ContasPagarService {
           orgId, companyId,
           historico: r.descricao!, valor: String(r.valor), dataVencimento: r.dataVencimento!,
           numeroDocumento: r.numeroDocumento,
-          contatoId: r.fornecedorId ?? null, categoriaId: r.categoriaId ?? null,
+          contatoId: r.fornecedorId ?? null,
+          fornecedorNome: (r as any).fornecedorNome ?? r.descricao ?? '',
+          categoriaId: r.categoriaId ?? null,
           situacao: 'aberto', marcadores: [],
           tinyId: r.tinyId ? String(r.tinyId) : undefined,
         }));

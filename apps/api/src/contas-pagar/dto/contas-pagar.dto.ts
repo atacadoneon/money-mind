@@ -14,6 +14,7 @@ export class CreateContaPagarDto {
   @ApiPropertyOptional() @IsOptional() @IsDateString() dataEmissao?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() numeroDocumento?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() fornecedorId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @Length(1, 200) fornecedorNome?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() categoriaId?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() formaPagamentoId?: string;
   @ApiPropertyOptional() @IsOptional() @IsUUID() contaBancariaId?: string;
