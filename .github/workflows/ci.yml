@@ -207,7 +207,7 @@ jobs:
       - name: API coverage
         run: pnpm --filter api test:cov
       - name: Upload API coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           files: apps/api/coverage/lcov.info
           flags: api
