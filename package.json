@@ -27,19 +27,19 @@
     "load:full": "pnpm load:load && pnpm load:stress"
   },
   "devDependencies": {
-    "@types/node": "^20.12.0",
+    "@types/node": "^25.6.0",
     "@types/pg": "^8.11.6",
-    "@typescript-eslint/eslint-plugin": "^8.58.2",
-    "@typescript-eslint/parser": "^8.58.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
     "dotenv": "^16.4.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "pg": "^8.11.5",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.14",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.7.3",
     "tsx": "^4.7.2",
     "turbo": "^2.0.6",
-    "typescript": "^5.4.5"
+    "typescript": "^6.0.3"
   },
   "packageManager": "pnpm@9.1.0",
   "engines": {
